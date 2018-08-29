@@ -61,5 +61,6 @@ class UI extends JFrame {
 
     public UI() {
         init();
+        System.out.println("Congratulations on running your very own copy of Wispr!");
     }
 }
