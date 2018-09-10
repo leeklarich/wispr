@@ -1,0 +1,39 @@
+Shall Statements for RTM
+
+Main Page
+	Shall contain a space to enter your username
+	Shall contain a button to host server
+	Shall contain button to join server
+		Shall contain space to enter IP Address of host
+
+
+Host Page
+	Shall contain a space to enter plaintext
+	Shall contain a window to view plaintext sent and recieved
+	Shall contain a "Send" button to initiate encryption and transmit encrypted content to client
+		Shall encrypt plaintext
+			Shall send encrypted text to client
+				Shall include date/time of transmission
+				Shall store information in a database for logging (proof of encryption)
+	Shall recieve encrypted text
+	Shall decrypt encrypted text 
+	Shall post plaintext in window
+		Shall contain Plaintext, Date/Time, and Username of Sender
+	Shall contain "End" button that closes the application
+		Shall print out contents from the database onto a text file (encrypted chat log)
+		
+
+Client Page
+	Shall contain a space to enter plaintext
+		Shall contain a window to view plaintext sent and recieved
+		Shall contain a "Send" button to initiate encryption and transmit encrypted content to client
+			Shall encrypt plaintext
+			Shall send encrypted text to Host
+				Shall include date/time of transmission
+				Shall store information in a database for logging (proof of encryption)
+		Shall recieve encrypted text
+		Shall decrypt encrypted text
+	Shall post plaintext in window
+		Shall contain Plaintext, Date/Time, and Username of Sender
+	Shall contain "End" button that closes the application
+			Shall print out contents from the database onto a text file (encrypted chat log)
