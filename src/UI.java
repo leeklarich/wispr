@@ -23,6 +23,7 @@ class UI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 contentDisplay.append("\n" + msg.getText());
+                msg.setText("");
             }
         });
     }

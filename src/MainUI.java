@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 
 class MainUI extends JFrame {
     int MAIN_MARGIN = 10;
@@ -25,7 +26,8 @@ class MainUI extends JFrame {
                    input = "Unknown";
                }
                System.out.println("Creating Host Environment as " + input);
-             
+                UI gui = new UI();
+                dispose();
             }
         });
     }
@@ -43,6 +45,8 @@ class MainUI extends JFrame {
                    input = "Unknown";
                }
                System.out.println("Joining Host " + IP +  " as "  + input);
+               UI gui = new UI();
+               dispose();
             }
         });
     }
@@ -52,11 +56,12 @@ class MainUI extends JFrame {
 
 void init() 
     {
-        JFrame frame = new JFrame("Wispr");
+        //JFrame frame = new JFrame("Wispr");
+        this.setTitle("Wispr");
         JPanel main = new JPanel(new GridBagLayout());
-        frame.setSize(frameDimension);
+        this.setSize(frameDimension);
         GridBagConstraints cs = new GridBagConstraints();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         cs.fill = GridBagConstraints.HORIZONTAL;
         
@@ -127,8 +132,8 @@ void init()
         
         
         setTitle(title);
-        frame.add(main,BorderLayout.CENTER);
-        frame.setVisible(true);
+        this.add(main,BorderLayout.CENTER);
+        this.setVisible(true);
     }
     
     
