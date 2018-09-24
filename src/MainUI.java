@@ -9,8 +9,8 @@ class MainUI extends JFrame {
     int MAIN_MARGIN = 10;
     String title = "dev:MainUI";
     Dimension frameDimension = new Dimension(1000,1000);
-    private JLabel mainLabel, hostLabel, joinLabel,enterUsername;
-    private JButton hostStart, joinStart;
+    private JLabel mainLabel, enterUsername, enterPass;
+    private JButton joinStart;
     private String input;
     private String IP;
 
@@ -26,7 +26,7 @@ class MainUI extends JFrame {
                    input = "Unknown";
                }
                System.out.println("Creating Host Environment as " + input);
-                UI gui = new UI();
+                UI gui = new UI(new Client());
                 dispose();
             }
         });
@@ -45,7 +45,7 @@ class MainUI extends JFrame {
                    input = "Unknown";
                }
                System.out.println("Joining Host " + IP +  " as "  + input);
-               UI gui = new UI();
+               UI gui = new UI(new Client());
                dispose();
             }
         });
@@ -65,15 +65,8 @@ void init()
         
         cs.fill = GridBagConstraints.HORIZONTAL;
         
-        hostStart = new JButton("Click To Host");
-        hostStart.setMnemonic(KeyEvent.VK_ENTER); //Not working but doesn't harm the program to my knowledge
-       
-        
-        joinStart = new JButton("Click To Join");
+        joinStart = new JButton("Click To Login");
         joinStart.setMnemonic(KeyEvent.VK_ENTER); //Not working but doesn't harm the program to my knowledge
-      
-        
-        
         
         mainLabel = new JLabel("Welcome to Wispr!", SwingConstants.CENTER);
         mainLabel.setBorder(BorderFactory.createEmptyBorder(MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN));
@@ -82,39 +75,12 @@ void init()
         cs.gridwidth=1;
         main.add(mainLabel,cs);
         
-        hostLabel = new JLabel("Host A Server ", SwingConstants.CENTER);
-        hostLabel.setBorder(BorderFactory.createEmptyBorder(MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN));
-        cs.gridx = 0;
-        cs.gridy= 15;
-        cs.gridwidth=1;
-        main.add(hostLabel,cs);
         cs.gridx = 10;
-        cs.gridy= 15;
-        cs.gridwidth=1;
-        main.add(hostStart,cs);
-        
-        joinLabel = new JLabel("Join A Server (Enter Host IP)", SwingConstants.CENTER);
-        joinLabel.setBorder(BorderFactory.createEmptyBorder(MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN));
-        cs.gridx = 0;
-        cs.gridy=30;
-        cs.gridwidth=1;
-        main.add(joinLabel,cs);
-    
-        
-        JTextField IpIn = new JTextField(50);
-        cs.gridx = 10;
-        cs.gridy = 30;
-        cs.gridwidth = 1;
-        main.add(IpIn,cs);
-        
-        cs.gridx = 10;
-        cs.gridy=50;
+        cs.gridy=220;
         cs.gridwidth = 1;
         main.add(joinStart,cs);
-        
-      
-        
-        enterUsername = new JLabel("Enter Your Username (Optional)", SwingConstants.CENTER);
+
+        enterUsername = new JLabel("Enter Your Username", SwingConstants.CENTER);
         enterUsername.setBorder(BorderFactory.createEmptyBorder(MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN));
         cs.gridx = 0 ;
         cs.gridy= 100 ;
@@ -126,10 +92,19 @@ void init()
         cs.gridy = 100;
         cs.gridwidth = 1;
         main.add(UserIn,cs);
-        
-        hostButtonListener(hostStart,UserIn);
-        joinButtonListener(joinStart,UserIn, IpIn);
-        
+
+        enterPass = new JLabel("Enter Your Password", SwingConstants.CENTER);
+        enterPass.setBorder(BorderFactory.createEmptyBorder(MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN));
+        cs.gridx = 0 ;
+        cs.gridy= 150 ;
+        cs.gridwidth= 1;
+        main.add(enterPass,cs);
+
+        JTextField PassIn = new JTextField(50);
+        cs.gridx = 10;
+        cs.gridy = 150;
+        cs.gridwidth = 1;
+        main.add(PassIn,cs);
         
         setTitle(title);
         this.add(main,BorderLayout.CENTER);

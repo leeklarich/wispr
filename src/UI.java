@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 class UI extends JFrame {
     int MAIN_MARGIN = 10;
@@ -12,6 +13,7 @@ class UI extends JFrame {
     private JTextArea contentDisplay;
     private JTextField msg;
     private JButton send;
+    private Client client;
 
     /**
      * This is to attach an ActionListener to a JButton, b.
@@ -22,8 +24,11 @@ class UI extends JFrame {
         b.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                contentDisplay.append("\n" + msg.getText());
+                String str = msg.getText();
+                //contentDisplay.append("\n" + str);
+                client.sendMsg(str);
                 msg.setText("");
+                System.out.println(client.getContent());
             }
         });
     }
@@ -32,6 +37,7 @@ class UI extends JFrame {
      * This initializes the GUI.
      */
     public void init() {
+        client.start();
         main = new JPanel();
         input = new JPanel();
         contentDisplay = new JTextArea("Welcome to Wispr!", 15, 50);
@@ -60,8 +66,19 @@ class UI extends JFrame {
         setVisible(true);
     }
 
-    public UI() {
+    public void run() {
+        while(true) {
+            String str = client.getResponse();
+            if(str != "") {
+                contentDisplay.append("\n" + str);
+            }
+        }
+    }
+
+    public UI(Client c) {
+        this.client = c;
         init();
         System.out.println("Congratulations on running your very own copy of Wispr!");
+        run();
     }
 }
