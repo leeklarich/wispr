@@ -62,6 +62,7 @@ public class Client extends Thread {
     public void sendMsg(String s) {
         try {
             output.writeObject(s);
+            System.out.println("[Sending] " + s);
         } catch(Exception e) {
             System.err.println(e);
             System.out.println("Failed to send message!");

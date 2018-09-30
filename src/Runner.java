@@ -11,7 +11,7 @@ public class Runner
             UI a = new UI(c);
             //c.start();
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("Startup error!\n" + e);
         }
     }
 }
