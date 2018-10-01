@@ -6,30 +6,57 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 class UI extends JFrame {
-    private Client client;
+    //private Client client;
     private ChatUI chat;
-    private LoginUI login;
+    private MainUI login;
     private SplashUI splash;
     private int state; // 0 - login page; 1 - splash page; 2 - chat page
 
     /**
      * This initializes the GUI.
      */
-    public void init() {
-        client.start();
-        chat = new ChatUI(client);
-        setTitle("devUI");
-        //setPreferredSize(frameDimension);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        add(chat);
-        this.state = 2;
-        pack();
-        setVisible(true);
+    public void init(int a) {
+        if (a == 0)
+        {
+            //client.start();
+            login = new MainUI();
+            setTitle("Login");
+            //setPreferredSize(frameDimension);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            add(login);
+            pack();
+            setVisible(true);
+        }
+        
+        if (a == 1)
+        {
+            //client.start();
+            splash = new SplashUI();
+            setTitle("Splash Page");
+            //setPreferredSize(frameDimension);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            add(splash);
+            pack();
+            setVisible(true);
+        }
+        
+        if (a == 2)
+        {
+            //client.start();
+            chat = new ChatUI();
+            setTitle("Chat");
+            //setPreferredSize(frameDimension);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            add(chat);
+            pack();
+            setVisible(true);
+        }
     }
-
+    /*
     public void run() {
         while(true) {
            if(state == 2) {
+               client.start();
                String str = client.getResponse();
                if(str != "") {
                    chat.displayMessage("\n" + str);
@@ -37,11 +64,15 @@ class UI extends JFrame {
            }
         }
     }
-
-    public UI(Client c) {
-        this.client = c;
-        init();
-        System.out.println("Congratulations on running your very own copy of Wispr!");
-        run();
+*/
+    public UI(int a) 
+    {
+        init(a);
+        System.out.println();
+    }
+    
+    public UI()
+    {
+        init(0);
     }
 }

@@ -4,119 +4,132 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import org.jdesktop.beansbinding.*;
+import org.jdesktop.layout.*;
 
-class MainUI extends JFrame {
-    int MAIN_MARGIN = 10;
-    String title = "dev:MainUI";
-    Dimension frameDimension = new Dimension(1000,1000);
-    private JLabel mainLabel, enterUsername, enterPass;
-    private JButton joinStart;
-    private String input;
-    private String IP;
+class MainUI extends JPanel {
+    JLabel UsernameLabel = new JLabel();
+    TextField userField = new java.awt.TextField();
+    JLabel PasswordLabel = new javax.swing.JLabel();
+    TextField PassField = new java.awt.TextField();
+    JLabel TitleLabel = new javax.swing.JLabel();
+    JButton LoginButton = new javax.swing.JButton();
+    JButton CreateAccButton = new javax.swing.JButton();
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
+    private Client client;
 
-     public void hostButtonListener(JButton b,JTextField a) 
-     {
-        b.addActionListener(new ActionListener() 
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-               input = a.getText();
-                if(input.isEmpty())
-               {
-                   input = "Unknown";
-               }
-               System.out.println("Creating Host Environment as " + input);
-                UI gui = new UI(new Client());
-                dispose();
-            }
-        });
-    }
+
      
-    public void joinButtonListener(JButton b,JTextField a, JTextField d) 
-     {
-        b.addActionListener(new ActionListener() 
+void init() 
+    {  
+        
+        setBackground(new java.awt.Color(51, 153, 255));
+        setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        setForeground(new java.awt.Color(0, 102, 153));
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
+
+        UsernameLabel = new javax.swing.JLabel();
+        userField = new java.awt.TextField();
+        PasswordLabel = new javax.swing.JLabel();
+        PassField = new java.awt.TextField();
+        TitleLabel = new javax.swing.JLabel();
+        LoginButton = new javax.swing.JButton();
+        CreateAccButton = new javax.swing.JButton();
+
+        UsernameLabel.setText("Username: ");
+
+        userField.setText("");
+
+        PasswordLabel.setText("Password:");
+
+        PassField.setText("");
+        PassField.setEchoChar('*');
+        
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, PassField, org.jdesktop.beansbinding.ELProperty.create("${echoChar}"), PassField, org.jdesktop.beansbinding.BeanProperty.create("echoChar"));
+        bindingGroup.addBinding(binding);
+
+        TitleLabel.setText("WISPR");
+
+        LoginButton.setText("Login");
+        LoginButton.addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent e)
             {
-               IP = d.getText();
-               input = a.getText();
-               if(input.isEmpty())
-               {
-                   input = "Unknown";
-               }
-               System.out.println("Joining Host " + IP +  " as "  + input);
-               UI gui = new UI(new Client());
-               dispose();
+                if(userField.getText().equals("william") && PassField.getText().equals("holley"))
+                {
+                JOptionPane.showMessageDialog(null, "Logging In As " + userField.getText());
+                   UI b = new UI (1);
+                }
+                else 
+                    JOptionPane.showMessageDialog(null, "You Have Entered The Wrong Credentials!");
             }
         });
-    }
 
-    
-    
+        CreateAccButton.setText("Create Account");
+        CreateAccButton.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                   JOptionPane.showMessageDialog(null, "You Have Created The Account " + userField.getText() + "!");
+                   UI b = new UI (1);
+                   
+                   
+            }
+        });
 
-void init() 
+        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(TitleLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 76, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(153, 153, 153))
+            .add(layout.createSequentialGroup()
+                .add(83, 83, 83)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(CreateAccButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 107, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(LoginButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 97, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                        .add(layout.createSequentialGroup()
+                            .add(PasswordLabel)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(PassField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
+                            .add(UsernameLabel)
+                            .add(5, 5, 5)
+                            .add(userField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 157, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(100, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .add(63, 63, 63)
+                .add(TitleLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 34, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(37, 37, 37)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(userField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(UsernameLabel))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(PasswordLabel)
+                    .add(PassField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 30, Short.MAX_VALUE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(CreateAccButton)
+                    .add(LoginButton))
+                .add(63, 63, 63))
+        );
+
+        bindingGroup.bind();
+  
+}
+   public MainUI() 
     {
-        //JFrame frame = new JFrame("Wispr");
-        this.setTitle("Wispr");
-        JPanel main = new JPanel(new GridBagLayout());
-        this.setSize(frameDimension);
-        GridBagConstraints cs = new GridBagConstraints();
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        cs.fill = GridBagConstraints.HORIZONTAL;
-        
-        joinStart = new JButton("Click To Login");
-        joinStart.setMnemonic(KeyEvent.VK_ENTER); //Not working but doesn't harm the program to my knowledge
-        
-        mainLabel = new JLabel("Welcome to Wispr!", SwingConstants.CENTER);
-        mainLabel.setBorder(BorderFactory.createEmptyBorder(MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN));
-        cs.gridx = 10;
-        cs.gridy= 0;
-        cs.gridwidth=1;
-        main.add(mainLabel,cs);
-        
-        cs.gridx = 10;
-        cs.gridy=220;
-        cs.gridwidth = 1;
-        main.add(joinStart,cs);
-
-        enterUsername = new JLabel("Enter Your Username", SwingConstants.CENTER);
-        enterUsername.setBorder(BorderFactory.createEmptyBorder(MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN));
-        cs.gridx = 0 ;
-        cs.gridy= 100 ;
-        cs.gridwidth= 1;
-        main.add(enterUsername,cs);
-        
-        JTextField UserIn = new JTextField(50);
-        cs.gridx = 10;
-        cs.gridy = 100;
-        cs.gridwidth = 1;
-        main.add(UserIn,cs);
-
-        enterPass = new JLabel("Enter Your Password", SwingConstants.CENTER);
-        enterPass.setBorder(BorderFactory.createEmptyBorder(MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN));
-        cs.gridx = 0 ;
-        cs.gridy= 150 ;
-        cs.gridwidth= 1;
-        main.add(enterPass,cs);
-
-        JTextField PassIn = new JTextField(50);
-        cs.gridx = 10;
-        cs.gridy = 150;
-        cs.gridwidth = 1;
-        main.add(PassIn,cs);
-        
-        setTitle(title);
-        this.add(main,BorderLayout.CENTER);
-        this.setVisible(true);
-    }
-    
-    
-    public MainUI() 
-    {
-        init();
+        //this.client = c;
+        this.init();
         System.out.println("Welcome to Wispr!");
     }
 }
-
-

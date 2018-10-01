@@ -30,7 +30,7 @@ public class ChatUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String str = msg.getText();
-                //contentDisplay.append("\n" + str);
+                contentDisplay.append("\n" + str);
                 client.sendMsg(str);
                 msg.setText("");
                 System.out.println(client.getContent());
@@ -42,6 +42,10 @@ public class ChatUI extends JPanel {
      * This initializes the GUI.
      */
     public void init() {
+        
+        setBackground(new java.awt.Color(51, 153, 255));
+        setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        setForeground(new java.awt.Color(0, 102, 153));
         input = new JPanel();
         contentDisplay = new JTextArea("Welcome to Wispr!", 15, 50);
         msg = new JTextField(50);
@@ -55,6 +59,7 @@ public class ChatUI extends JPanel {
 
         input.add(msg);
         input.add(send);
+        
 
         this.setLayout(new GridLayout(2,1));
         this.setBorder(BorderFactory.createEmptyBorder(MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN, MAIN_MARGIN));
@@ -66,8 +71,8 @@ public class ChatUI extends JPanel {
         contentDisplay.append(s);
     }
 
-    public ChatUI(Client c) {
-        this.client = c;
+    public ChatUI() {
+        //this.client = c;
         this.init();
     }
 }

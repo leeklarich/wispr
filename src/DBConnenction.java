@@ -3,7 +3,8 @@ import java.sql.*;
 public class DBConnenction {
     private Connection db;
 
-    public void connect(String url) {
+    public void connect(String url) 
+    {
         try {
             this.db = DriverManager.getConnection(url);
             System.out.println("Connection successful!");

@@ -10,6 +10,6 @@ public class AlertBox extends JFrame {
 
     public void init() {
         ok = new JButton("OK");
-        msg = new JLabel();
+        msg = new JLabel("Invalid Credentials");
     }
 }
