@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.sql.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -75,17 +76,10 @@ void init()
         {
             public void actionPerformed(ActionEvent e)
             {
-                try
-                {
-                    parent.dbc.insertDB(userField.getText(), PassField.getText());
-                    JOptionPane.showMessageDialog(null, "You Have Created The Account " + userField.getText() + "!");
-                    parent.setUsername(userField.getText());
-                    parent.init(1);
-                }
-                catch(Exception ex)
-                {
-                    System.out.println("Error creating user!");
-                }
+                parent.dbc.insertDB(userField.getText(), PassField.getText());
+                JOptionPane.showMessageDialog(null, "You Have Created The Account " + userField.getText() + "!");
+                parent.setUsername(userField.getText());
+                parent.init(1);
             }
         });
 

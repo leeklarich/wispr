@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.sql.*;
 
 public class DBConnenction {
@@ -39,31 +40,15 @@ public class DBConnenction {
 
     //adds new username into database table
     public void insertDB(String username, String password){
-        url = this.url;
         String sql = "INSERT INTO users(username,password) VALUES(?,?)";
-
-        try(Connection conn = DriverManager.getConnection(url);
-            PreparedStatement pstmt = conn.prepareStatement(sql)){
+        try {
+            Connection conn = DriverManager.getConnection(url);
+            sql = "INSERT INTO users(username,password) VALUES(?,?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, username);
             pstmt.setString(2, password);
             pstmt.executeUpdate();
-
-            pstmt.close();
-
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void testDB() {
-        String query = "SELECT * FROM users";
-        try {
-            PreparedStatement pstmt = this.db.prepareStatement(query);
-            ResultSet rs = pstmt.executeQuery();
-            while(rs.next()) {
-                System.out.println(rs.getRow());
-            }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
