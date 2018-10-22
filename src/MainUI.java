@@ -16,10 +16,8 @@ class MainUI extends JPanel {
     JButton LoginButton = new javax.swing.JButton();
     JButton CreateAccButton = new javax.swing.JButton();
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
-    private Client client;
+    private UI parent;
 
-
-     
 void init() 
     {  
         
@@ -55,10 +53,17 @@ void init()
         {
             public void actionPerformed(ActionEvent e)
             {
-                if(userField.getText().equals("william") && PassField.getText().equals("holley"))
+                /*if(userField.getText().equals("william") && PassField.getText().equals("holley"))
                 {
-                JOptionPane.showMessageDialog(null, "Logging In As " + userField.getText());
-                   UI b = new UI (1);
+                    JOptionPane.showMessageDialog(null, "Logging In As " + userField.getText());
+                    parent.setUsername(userField.getText());
+                    parent.changeState(1);
+                }*/
+                if(parent.dbc.getLogin(userField.getText(), PassField.getText()))
+                {
+                    JOptionPane.showMessageDialog(null, "Logging In As " + userField.getText());
+                    parent.setUsername(userField.getText());
+                    parent.init(1);
                 }
                 else 
                     JOptionPane.showMessageDialog(null, "You Have Entered The Wrong Credentials!");
@@ -70,10 +75,17 @@ void init()
         {
             public void actionPerformed(ActionEvent e)
             {
-                   JOptionPane.showMessageDialog(null, "You Have Created The Account " + userField.getText() + "!");
-                   UI b = new UI (1);
-                   
-                   
+                try
+                {
+                    parent.dbc.insertDB(userField.getText(), PassField.getText());
+                    JOptionPane.showMessageDialog(null, "You Have Created The Account " + userField.getText() + "!");
+                    parent.setUsername(userField.getText());
+                    parent.init(1);
+                }
+                catch(Exception ex)
+                {
+                    System.out.println("Error creating user!");
+                }
             }
         });
 
@@ -122,13 +134,12 @@ void init()
                     .add(LoginButton))
                 .add(63, 63, 63))
         );
-
         bindingGroup.bind();
-  
-}
-   public MainUI() 
+    }
+
+   public MainUI(UI main)
     {
-        //this.client = c;
+        this.parent = main;
         this.init();
         System.out.println("Welcome to Wispr!");
     }

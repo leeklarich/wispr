@@ -11,8 +11,8 @@ Once a chat is entered, this view will be replaced in the client application wit
 
  */
 public class SplashUI extends JPanel {
-    private Client client;
-     JPanel splash = new JPanel(new GridBagLayout());
+    private UI parent;
+    JPanel splash = new JPanel(new GridBagLayout());
      
      
      void init() 
@@ -50,12 +50,12 @@ public class SplashUI extends JPanel {
         
         
         Enter1.setText("Enter");
-        Enter2.addActionListener(new ActionListener() 
+        Enter1.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                    System.out.println("Entering " + RoomName1.getText());
-                   UI c = new UI (2);
+                   parent.init(2);
             }
         });
 
@@ -65,29 +65,29 @@ public class SplashUI extends JPanel {
             public void actionPerformed(ActionEvent e)
             {
                    System.out.println("Entering " + RoomName2.getText());
-                   UI c = new UI (2);
+                   parent.init(2);
             }
         });
 
 
         Enter3.setText("Enter");
-        Enter2.addActionListener(new ActionListener() 
+        Enter3.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                    System.out.println("Entering " + RoomName3.getText());
-                   UI c = new UI (2);
+                   parent.init(2);
             }
         });
       
 
         Enter4.setText("Enter");
-        Enter2.addActionListener(new ActionListener() 
+        Enter4.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                    System.out.println("Entering " + RoomName4.getText());
-                   UI c = new UI (2);
+                   parent.init(2);
             }
         });
 
@@ -102,13 +102,13 @@ public class SplashUI extends JPanel {
             }
         });
 
-        RoomCount1.setText("3/5 People");
+        RoomCount1.setText("");
 
-        RoomCount3.setText("1/5 People");
+        RoomCount3.setText("");
 
-        RoomCount2.setText("2/5 People");
+        RoomCount2.setText("");
 
-        RoomCount4.setText("4/5 People");
+        RoomCount4.setText("");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -178,9 +178,9 @@ public class SplashUI extends JPanel {
         );
     }// </editor-fold>                        
     
- public SplashUI() 
+ public SplashUI(UI main)
     {
-        //this.client = c;
+        this.parent = main;
         this.init();
     }
 }

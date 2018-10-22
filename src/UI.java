@@ -6,73 +6,73 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 class UI extends JFrame {
-    private Client client = new Client();
+    public Client client = new Client();
     private ChatUI chat;
     private MainUI login;
     private SplashUI splash;
+    private JPanel main;
     private int state; // 0 - login page; 1 - splash page; 2 - chat page
+    public String username;
+    public DBConnenction dbc;
 
     /**
      * This initializes the GUI.
      */
     public void init(int a) {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        clearPanel();
         if (a == 0)
         {
             client.start();
-            login = new MainUI();
+            login = new MainUI(this);
+            main.add(login);
             setTitle("Login");
-            //setPreferredSize(frameDimension);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            add(login);
-            pack();
-            setVisible(true);
         }
-        
+
         if (a == 1)
         {
-            //client.start();
-            splash = new SplashUI();
+            splash = new SplashUI(this);
+            main.add(splash);
             setTitle("Splash Page");
-            //setPreferredSize(frameDimension);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            add(splash);
-            pack();
-            setVisible(true);
         }
-        
+
         if (a == 2)
         {
-            //client.start();
-            chat = new ChatUI();
+            chat = new ChatUI(this);
+            main.add(chat);
             setTitle("Chat");
-            //setPreferredSize(frameDimension);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            add(chat);
-            pack();
-            setVisible(true);
+        }
+        pack();
+        setVisible(true);
+    }
+
+    public void clearPanel()
+    {
+        try {
+            main.removeAll();
+        } catch(Exception e) {
+            System.out.println("Couldn't remove panel!");
         }
     }
-    /*
-    public void run() {
-        while(true) {
-           if(state == 2) {
-               client.start();
-               String str = client.getResponse();
-               if(str != "") {
-                   chat.displayMessage("\n" + str);
-               }
-           }
-        }
+
+    public void setUsername(String s)
+    {
+        this.username = s;
     }
-*/
+
     public UI(int a) 
     {
+        this.dbc = new DBConnenction();
         init(a);
-        System.out.println();
     }
     
     public UI()
     {
+        this.main = new JPanel();
+        add(main);
+        this.dbc = new DBConnenction();
         init(0);
     }
 }

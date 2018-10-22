@@ -3,14 +3,17 @@ import java.net.*;
 
 public class ClientConnection extends Thread {
     protected Socket sock;
+    private ObjectOutputStream out;
+    private Server serv;
 
-    public ClientConnection(Socket client) {
+    public ClientConnection(Socket client, Server s) {
+        this.serv = s;
         this.sock = client;
     }
 
     public void run() {
         ObjectInputStream in = null;
-        ObjectOutputStream out = null;
+        out = null;
         BufferedReader br = null;
 
         try {
@@ -27,10 +30,9 @@ public class ClientConnection extends Thread {
             try {
                 line = (String) in.readObject();
                 System.out.println("[Server] Received message: " + line);
-                out.writeObject("User: " + line);
-
+                this.serv.broadcast(line);
                 if(line.equalsIgnoreCase("exit")) break;
-            } catch (Exception e) {
+            } catch(Exception e) {
                 System.out.println(e);
                 break;
             }
@@ -42,6 +44,14 @@ public class ClientConnection extends Thread {
             br.close();
         } catch(Exception e) {
             System.out.println(e);
+        }
+    }
+
+    public void broadcast(String str) {
+        try {
+            out.writeObject(str);
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }

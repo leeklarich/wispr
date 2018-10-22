@@ -9,7 +9,8 @@ public class Client extends Thread {
     private Socket sock;
     private ObjectInputStream input;
     private ObjectOutputStream output;
-    private ArrayList<String> queue = new ArrayList<>();
+    public ArrayList<String> queue = new ArrayList<>();
+    private String username;
 
     public void run() {
         try {
@@ -20,12 +21,12 @@ public class Client extends Thread {
 
             input = new ObjectInputStream(sock.getInputStream());
 
-            //while(true) {
-             //   String resp = (String) input.readObject();
-             //   queue.add("[Response] " + resp);
-             //   System.out.println("[Client] Received: " + resp);
-             //   if(resp.equalsIgnoreCase("exit")) break;
-            //}
+            while(true) {
+                String resp = (String) input.readObject();
+                queue.add(resp);
+                System.out.println(queue);
+                if(resp.equalsIgnoreCase("exit")) break;
+            }
         } catch (Exception e) {
             System.out.println(e);
             System.out.println("Failed to run client and make connection!");
@@ -40,12 +41,6 @@ public class Client extends Thread {
         } catch(Exception e) {
             System.out.println("Error killing client streams!");
         }
-    }
-
-    public ArrayList<String> getContent() {
-        final ArrayList<String> q = new ArrayList<>(queue);
-        queue.clear();
-        return q;
     }
 
     public String getResponse() {

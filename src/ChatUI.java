@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 /*
 This will be the view for the chat room
@@ -18,25 +19,7 @@ public class ChatUI extends JPanel {
     private JTextArea contentDisplay;
     private JTextField msg;
     private JButton send;
-    private Client client;
-
-    /**
-     * This is to attach an ActionListener to a JButton, b.
-     * The actionPerformed method can be edited to change the functionality of the button.
-     * @param b - JButton
-     */
-    public void addButtonListener(JButton b) {
-        b.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String str = msg.getText();
-                contentDisplay.append("\n" + str);
-                client.sendMsg(str);
-                msg.setText("");
-                System.out.println(client.getContent());
-            }
-        });
-    }
+    private UI parent;
 
     /**
      * This initializes the GUI.
@@ -68,11 +51,43 @@ public class ChatUI extends JPanel {
     }
 
     public void displayMessage(String s) {
-        contentDisplay.append(s);
+        contentDisplay.append("\n" + s);
     }
 
-    public ChatUI() {
-        //this.client = c;
+    /**
+     * This is to attach an ActionListener to a JButton, b.
+     * The actionPerformed method can be edited to change the functionality of the button.
+     * @param b - JButton
+     */
+    public void addButtonListener(JButton b) {
+        b.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String str = parent.username + ": " + msg.getText();
+                parent.client.sendMsg(str);
+                msg.setText("");
+            }
+        });
+    }
+
+    public void run() {
+        Thread read = new Thread(new Runnable() {
+            public void run() {
+                while(true) {
+                    System.out.println(parent.client.queue.size());
+                    while(parent.client.queue.size() > 0) {
+                        displayMessage(parent.client.queue.get(0));
+                        parent.client.queue.remove(0);
+                    }
+                }
+            }
+        });
+        read.start();
+    }
+
+    public ChatUI(UI main) {
+        this.parent = main;
         this.init();
+        this.run();
     }
 }
