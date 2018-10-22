@@ -1,6 +1,12 @@
 public class Runner 
 {
     public static void main(String[] args) {
-        UI a = new UI();
+        try {
+            Server s = new Server();
+            s.start();
+            UI a = new UI();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 class UI extends JFrame {
-    //private Client client;
+    private Client client = new Client();
     private ChatUI chat;
     private MainUI login;
     private SplashUI splash;
@@ -18,7 +18,7 @@ class UI extends JFrame {
     public void init(int a) {
         if (a == 0)
         {
-            //client.start();
+            client.start();
             login = new MainUI();
             setTitle("Login");
             //setPreferredSize(frameDimension);
