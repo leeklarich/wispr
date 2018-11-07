@@ -12,7 +12,7 @@ Once a chat is entered, this view will be replaced in the client application wit
  */
 public class SplashUI extends JPanel {
     private UI parent;
-    JPanel splash = new JPanel(new GridBagLayout());
+    JPanel splash = new JPanel();
      
      
      void init() 
@@ -35,6 +35,8 @@ public class SplashUI extends JPanel {
         JLabel RoomCount3 = new javax.swing.JLabel();
         JLabel RoomCount2 = new javax.swing.JLabel();
         JLabel RoomCount4 = new javax.swing.JLabel();
+
+
 
         TitleLabel.setText("WISPR");
 

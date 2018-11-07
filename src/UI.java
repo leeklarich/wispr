@@ -33,6 +33,7 @@ class UI extends JFrame {
         {
             splash = new SplashUI(this);
             main.add(splash);
+            FriendsBox fb = new FriendsBox(this);
             setTitle("Splash Page");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
