@@ -63,8 +63,8 @@ public class ChatUI extends JPanel {
         b.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                RSA encryption = new RSA (msg.getText());
-                encryption.run(msg.getText());
+                //RSA encryption = new RSA (msg.getText());
+                //encryption.run(msg.getText());
                 String str = parent.username + ": " + msg.getText();
                 parent.client.sendMsg(str);
                 msg.setText("");
@@ -76,7 +76,7 @@ public class ChatUI extends JPanel {
         Thread read = new Thread(new Runnable() {
             public void run() {
                 while(true) {
-                    System.out.println(parent.client.queue.size());
+                    System.out.print("");
                     while(parent.client.queue.size() > 0) {
                         displayMessage(parent.client.queue.get(0));
                         parent.client.queue.remove(0);

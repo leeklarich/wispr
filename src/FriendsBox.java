@@ -22,6 +22,7 @@ public class FriendsBox extends JFrame {
 
     public FriendsBox(UI p) {
         this.parent = p;
+        this.friendsList = this.parent.fList;
         init();
     }
 
@@ -73,55 +74,19 @@ public class FriendsBox extends JFrame {
 
         fMgmt.add(fList, c);
 
+        fMgmt.setBackground(new java.awt.Color(51, 153, 255));
+
         this.add(fMgmt);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         this.pack();
 
         getFriends();
+        displayFriends();
     }
 
     void getFriends() {
-        fList.setText("");
-        String line = "";
-        try {
-            BufferedReader br = new BufferedReader(new FileReader("./lst.txt"));
-            line = br.readLine();
-            System.out.println(line);
-            String[] list = line.split(",");
-            for(String s : list) {
-                friendsList.add(s);
-            }
-            displayFriends();
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-        /*Scanner scan = new Scanner("lst.txt");
-        scan.next();
-        if(scan.hasNext()) {
-            String[] list = scan.next().split(",");
-            for(String s : list) {
-                friendsList.add(s);
-                fList.append(s + "\n");
-            }
-            scan.close();
-        }*/
-    }
-
-    void updateFriends() {
-        String str = "";
-        for(String s : friendsList) {
-            str += s + ",";
-        }
-        str = str.substring(0,str.length());
-        File file;
-        try {
-            file = new File("./lst.txt");
-            BufferedWriter out = new BufferedWriter(new FileWriter(file));
-            out.write(str);
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
+        friendsList = this.parent.dbc.getFriends(this.parent.username);
     }
 
     void displayFriends() {
@@ -131,26 +96,15 @@ public class FriendsBox extends JFrame {
         }
     }
 
-    int addFriend(String name) {
-        for(String s : users) {
-            if(s.equals(name)) {
-                System.out.println("Added friend: " + name);
-                friendsList.add(name);
-                displayFriends();
-                return 1;
-            }
-        }
-        JOptionPane.showMessageDialog(null, "User " + name + " does not exist!");
-        return 0;
+    void addFriend(String name) {
+        this.parent.dbc.makeFriends(this.parent.username, name);
+        getFriends();
+        displayFriends();
     }
 
     void removeFriend(String name) {
-        if(friendsList.contains(name)) {
-            friendsList.remove(name);
-            displayFriends();
-        }
-        else {
-            fName.setText("");
-        }
+        this.parent.dbc.removeFriends(this.parent.username, name);
+        getFriends();
+        displayFriends();
     }
 }

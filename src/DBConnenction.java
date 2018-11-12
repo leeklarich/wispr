@@ -1,24 +1,19 @@
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DBConnenction {
-    private Connection db;
     private String url = "jdbc:sqlite:./new.db";
+    private Connection db;
 
-    //change type from var to connection
-    public void connect()
-    {
-        url = this.url;
+    public DBConnenction() {
         try {
-            this.db = DriverManager.getConnection(url);
-            System.out.println("Connection successful!");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println("Failed to connect to database!");
+            this.db = DriverManager.getConnection(this.url);
         }
-
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
-
     //creates table in the database if it doesnt exists
     public void createTable(){
         url = this.url;
@@ -27,14 +22,27 @@ public class DBConnenction {
                 + "username text NOT NULL,\n"
                 + "password text NOT NULL\n"
                 + ");";
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement()) {
+        try (Statement stmt = db.createStatement()) {
             // create a new table
             stmt.execute(sql);
-
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public void createFriendsTable() {
+        String query = "CREATE TABLE IF NOT EXISTS friends (\n"
+                + "user1 integer,\n"
+                + "user2 integer,\n"
+                + ");";
+        try (Connection conn = DriverManager.getConnection(this.url);
+            Statement stmt = conn.createStatement()) {
+            stmt.execute(query);
+            stmt.close();
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage() + "\nFailed to create friends table");
         }
     }
 
@@ -42,12 +50,12 @@ public class DBConnenction {
     public void insertDB(String username, String password){
         String sql = "INSERT INTO users(username,password) VALUES(?,?)";
         try {
-            Connection conn = DriverManager.getConnection(url);
             sql = "INSERT INTO users(username,password) VALUES(?,?)";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+            PreparedStatement pstmt = db.prepareStatement(sql);
             pstmt.setString(1, username);
             pstmt.setString(2, password);
             pstmt.executeUpdate();
+            pstmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -60,8 +68,8 @@ public class DBConnenction {
 
         String sql = "SELECT id ,username ,password "
                 + "FROM users WHERE username = ? AND password = ?";
-        try(Connection conn = DriverManager.getConnection(url);
-            PreparedStatement pstmt = conn.prepareStatement(sql)){
+        try {
+            PreparedStatement pstmt = db.prepareStatement(sql);
             pstmt.setString(1, user);
             pstmt.setString(2, pass);
 
@@ -75,5 +83,98 @@ public class DBConnenction {
             System.out.println(e.getMessage());
         }
         return userExists;
+    }
+
+    public void makeFriends(String user1, String user2) {
+        if(getUserId(user2) < 0) {
+            System.out.println("Invalid user!");
+            return;
+        }
+        String query = "INSERT INTO friends(user1, user2) VALUES (?, ?)";
+        try {
+            PreparedStatement pstmt = db.prepareStatement(query);
+            int user1ID = getUserId(user1);
+            int user2ID = getUserId(user2);
+            System.out.println(user1ID + "\t" + user2ID);
+            if(user1ID != -1 || user2ID != -1) {
+                pstmt.setInt(1, user1ID);
+                pstmt.setInt(2, user2ID);
+            }
+            pstmt.executeUpdate();
+            pstmt.close();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage() + "\nmake friends error");
+        }
+    }
+
+    public void removeFriends(String user1, String user2) {
+        String query = "DELETE FROM friends WHERE user1 = ? AND user2 = ?";
+        try {
+            PreparedStatement pstmt = db.prepareStatement(query);
+            int user1ID = getUserId(user1);
+            int user2ID = getUserId(user2);
+            if(user1ID != -1 || user2ID != -1) {
+                pstmt.setInt(1, user1ID);
+                pstmt.setInt(2, user2ID);
+            }
+            pstmt.executeUpdate();
+            pstmt.close();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage() + "\nremove friends error");
+        }
+    }
+
+    public ArrayList<String> getFriends(String user) {
+        ArrayList<String> list = new ArrayList<>();
+        String query = "SELECT user2 FROM friends WHERE user1 = ?;";
+        try {
+            PreparedStatement pstmt = db.prepareStatement(query);
+            pstmt.setInt(1, getUserId(user));
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+                list.add(getUserName(rs.getInt("user2")));
+            }
+            pstmt.close();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage() + "\nget friends error");
+        }
+        return list;
+    }
+
+    private int getUserId(String name) {
+        String query = "SELECT id FROM users WHERE username = ?";
+        try {
+            PreparedStatement pstmt = db.prepareStatement(query);
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                return rs.getInt("id");
+            }
+            pstmt.close();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+    }
+
+    private String getUserName(int id) {
+        String query = "SELECT username FROM users WHERE id = ?";
+        try {
+            PreparedStatement pstmt = db.prepareStatement(query);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                return rs.getString("username");
+            }
+            pstmt.close();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return "Failed lookup";
     }
 }

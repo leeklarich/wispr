@@ -5,6 +5,7 @@ public class ClientConnection extends Thread {
     protected Socket sock;
     private ObjectOutputStream out;
     private Server serv;
+    private ChatRoom room;
 
     public ClientConnection(Socket client, Server s) {
         this.serv = s;
@@ -21,18 +22,32 @@ public class ClientConnection extends Thread {
             br = new BufferedReader(new InputStreamReader(in));
             out = new ObjectOutputStream(sock.getOutputStream());
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println(e + "\nLine 24");
         }
 
-        String line;
-
-        while(true) {
-            try {
-                line = (String) in.readObject();
-                System.out.println("[Server] Received message: " + line);
-                this.serv.broadcast(line);
-                if(line.equalsIgnoreCase("exit")) break;
-            } catch(Exception e) {
+        while(true)
+        {
+            try
+            {
+                Bundle bundle = (Bundle) in.readObject();
+                /*System.out.println("[Server] Received message: " + line);
+                this.room.broadcast(line);
+                if(line.equalsIgnoreCase("exit")) break;*/
+                switch(bundle.getAction()) {
+                    case 0:
+                        // Switch room
+                        this.connect(bundle.getRoomNumber());
+                        break;
+                    case 1:
+                        // Send msg
+                        this.room.broadcast(bundle.getMsg());
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch(Exception e)
+            {
                 System.out.println(e);
                 break;
             }
@@ -47,11 +62,25 @@ public class ClientConnection extends Thread {
         }
     }
 
-    public void broadcast(String str) {
+    public void broadcast(String str)
+    {
         try {
             out.writeObject(str);
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + "\nCC broadcast issue");
         }
+    }
+
+    public void connect(int id)
+    {
+        if(this.room != null) {
+            this.room.disconnect(this);
+        }
+        this.room = this.serv.connectChatRoom(this, id);
+    }
+
+    public ChatRoom getRoom()
+    {
+        return this.room;
     }
 }

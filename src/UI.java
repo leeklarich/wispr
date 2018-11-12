@@ -14,6 +14,7 @@ class UI extends JFrame {
     private int state; // 0 - login page; 1 - splash page; 2 - chat page
     public String username;
     public DBConnenction dbc;
+    public ArrayList<String> fList;
 
     /**
      * This initializes the GUI.
@@ -34,6 +35,10 @@ class UI extends JFrame {
             splash = new SplashUI(this);
             main.add(splash);
             FriendsBox fb = new FriendsBox(this);
+            fList = this.dbc.getFriends(this.username);
+            for(String s : fList) {
+                System.out.println(s);
+            }
             setTitle("Splash Page");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }

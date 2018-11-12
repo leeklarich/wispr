@@ -57,6 +57,7 @@ public class SplashUI extends JPanel {
             public void actionPerformed(ActionEvent e)
             {
                    System.out.println("Entering " + RoomName1.getText());
+                   parent.client.changeRoom(0);
                    parent.init(2);
             }
         });
@@ -67,6 +68,7 @@ public class SplashUI extends JPanel {
             public void actionPerformed(ActionEvent e)
             {
                    System.out.println("Entering " + RoomName2.getText());
+                   parent.client.changeRoom(1);
                    parent.init(2);
             }
         });
@@ -78,6 +80,7 @@ public class SplashUI extends JPanel {
             public void actionPerformed(ActionEvent e)
             {
                    System.out.println("Entering " + RoomName3.getText());
+                   parent.client.changeRoom(2);
                    parent.init(2);
             }
         });
@@ -89,6 +92,7 @@ public class SplashUI extends JPanel {
             public void actionPerformed(ActionEvent e)
             {
                    System.out.println("Entering " + RoomName4.getText());
+                   parent.client.changeRoom(3);
                    parent.init(2);
             }
         });

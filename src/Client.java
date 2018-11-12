@@ -24,7 +24,6 @@ public class Client extends Thread {
             while(true) {
                 String resp = (String) input.readObject();
                 queue.add(resp);
-                System.out.println(queue);
                 if(resp.equalsIgnoreCase("exit")) break;
             }
         } catch (Exception e) {
@@ -43,6 +42,7 @@ public class Client extends Thread {
         }
     }
 
+    // Deprecated!
     public String getResponse() {
         String str = "";
         try {
@@ -56,11 +56,19 @@ public class Client extends Thread {
 
     public void sendMsg(String s) {
         try {
-            output.writeObject(s);
+            output.writeObject(new Bundle(s));
             System.out.println("[Sending] " + s);
         } catch(Exception e) {
             System.err.println(e);
             System.out.println("Failed to send message!");
+        }
+    }
+
+    public void changeRoom(int id) {
+        try {
+            output.writeObject(new Bundle(id));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }
