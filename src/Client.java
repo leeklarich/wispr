@@ -22,9 +22,12 @@ public class Client extends Thread {
             input = new ObjectInputStream(sock.getInputStream());
 
             while(true) {
-                String resp = (String) input.readObject();
-                queue.add(resp);
-                if(resp.equalsIgnoreCase("exit")) break;
+                Encryptor enc = new Encryptor("mathematical2001");
+                Bundle bun = (Bundle) input.readObject();
+                byte[] resp = bun.getMsg();
+                resp = enc.decrypt(resp);
+                queue.add(new String(resp));
+                if(resp.toString().equalsIgnoreCase("exit")) break;
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -42,22 +45,10 @@ public class Client extends Thread {
         }
     }
 
-    // Deprecated!
-    public String getResponse() {
-        String str = "";
-        try {
-            str = (String) input.readObject();
-        } catch(Exception e) {
-            System.out.println(e);
-            System.out.println("Failed to get response!");
-        }
-        return str;
-    }
-
-    public void sendMsg(String s) {
+    public void sendMsg(byte[] s) {
         try {
             output.writeObject(new Bundle(s));
-            System.out.println("[Sending] " + s);
+            System.out.println("[Sending] " + s.toString());
         } catch(Exception e) {
             System.err.println(e);
             System.out.println("Failed to send message!");

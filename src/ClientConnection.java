@@ -62,10 +62,10 @@ public class ClientConnection extends Thread {
         }
     }
 
-    public void broadcast(String str)
+    public void broadcast(byte[] str)
     {
         try {
-            out.writeObject(str);
+            out.writeObject(new Bundle(str));
         } catch(Exception e) {
             System.out.println(e.getMessage() + "\nCC broadcast issue");
         }

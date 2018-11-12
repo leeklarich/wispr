@@ -63,9 +63,11 @@ public class ChatUI extends JPanel {
         b.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                RSA encryption = new RSA (msg.getText());
-                encryption.run(msg.getText());
-                String str = parent.username + ": " + msg.getText();
+                //RSA encryption = new RSA (msg.getText());
+                //encryption.run(msg.getText());
+                Encryptor enc = new Encryptor("mathematical2001");
+                byte[] str = (parent.username + ": " + msg.getText()).getBytes();
+                str = enc.encrypt(str);
                 parent.client.sendMsg(str);
                 msg.setText("");
             }

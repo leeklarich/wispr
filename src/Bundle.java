@@ -3,7 +3,7 @@ import java.io.Serializable;
 public class Bundle implements Serializable {
     private int action;
     private String[] payload;
-    private String msg;
+    private byte[] msg;
     private int roomNumber;
 
     public Bundle() {
@@ -20,7 +20,7 @@ public class Bundle implements Serializable {
         this.roomNumber = rn;
     }
 
-    public Bundle(String str) {
+    public Bundle(byte[] str) {
         this.action = 1;
         this.msg = str;
     }
@@ -45,7 +45,7 @@ public class Bundle implements Serializable {
 
     public void setRoomNumber(int rn) { this.roomNumber = rn; }
 
-    public String getMsg() { return msg; }
+    public byte[] getMsg() { return msg; }
 
-    public void setMsg(String str) { this.msg = str; }
+    public void setMsg(byte[] str) { this.msg = str; }
 }

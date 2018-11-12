@@ -10,7 +10,7 @@ public class Server extends Thread
     private Socket sock;
     private DBConnenction conn;
     private ArrayList<ClientConnection> connections;
-    private ArrayList<ChatRoom> rooms;
+    public ArrayList<ChatRoom> rooms;
     public ArrayList<String> msgs;
 
     public ChatRoom connectChatRoom(ClientConnection cc, int roomNumber)
@@ -56,7 +56,7 @@ public class Server extends Thread
         }
     }
 
-    public void broadcast(String s, int roomNumber)
+    public void broadcast(byte[] s, int roomNumber)
     {
         try
         {
