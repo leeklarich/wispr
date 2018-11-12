@@ -18,12 +18,13 @@ public class RSA
         private int        bitlength = 1024;
         private Random     r;
         public String test;
-        private static final String FILENAME = "rsa_test.txt";
+        private String fileName;
         BufferedWriter bw = null;
         FileWriter fw = null;
  
     public RSA(String test)
     {
+        this.fileName = "./logs/" + System.currentTimeMillis();
         r = new Random();
         p = BigInteger.probablePrime(bitlength, r);
         q = BigInteger.probablePrime(bitlength, r);
@@ -47,7 +48,7 @@ public class RSA
                 + bytesToString(test.getBytes()));
         
         try {
-            fw = new FileWriter(FILENAME);
+            fw = new FileWriter(fileName);
             bw = new BufferedWriter(fw);
             // encrypt
             byte[] encrypted = rsa.encrypt(test.getBytes());
