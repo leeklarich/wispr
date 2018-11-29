@@ -25,24 +25,29 @@ public class ChatRoom
     public void broadcast(byte[] s)
     {
         logMsg(s.toString());
+
         for(ClientConnection cc : ccList)
         {
             cc.broadcast(s);
         }
     }
 
-    public void logMsg(String s) {
+    public void logMsg(String s)
+    {
         FileWriter fw;
         BufferedWriter bw;
 
-        try {
+        try
+        {
             fw = new FileWriter("./logs/" + this.server.rooms.indexOf(this) + ".txt", true);
             bw = new BufferedWriter(fw);
+
             bw.write(s + "\n");
             bw.close();
             fw.close();
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             System.out.println(e.getMessage());
         }
     }

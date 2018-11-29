@@ -10,7 +10,8 @@ The user will also be able to add/delete/start private chat with friends from th
 Once a chat is entered, this view will be replaced in the client application with the chat room UI view
 
  */
-public class SplashUI extends JPanel {
+public class SplashUI extends JPanel
+{
     private UI parent;
     JPanel splash = new JPanel();
      

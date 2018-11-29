@@ -6,17 +6,21 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 
-public class Encryptor {
+public class Encryptor
+{
     private String key;
 
-    public Encryptor(String k) {
+    public Encryptor(String k)
+    {
         this.key = k;
     }
 
-    public byte[] encrypt(byte[] input) {
+    public byte[] encrypt(byte[] input)
+    {
         byte[] encStr;
 
-        try {
+        try
+        {
             SecretKeySpec sks = new SecretKeySpec(this.key.getBytes(), "AES");
             Cipher c = Cipher.getInstance("AES");
             c.init(Cipher.ENCRYPT_MODE, sks);
@@ -24,17 +28,20 @@ public class Encryptor {
             System.out.println(encStr.length);
             return encStr;
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             System.out.println(e.getMessage());
         }
 
         return null;
     }
 
-    public byte[] decrypt(byte[] input) {
+    public byte[] decrypt(byte[] input)
+    {
         byte[] encStr;
 
-        try {
+        try
+        {
             SecretKeySpec sks = new SecretKeySpec(this.key.getBytes(), "AES");
             Cipher c = Cipher.getInstance("AES");
             c.init(Cipher.DECRYPT_MODE, sks);
@@ -42,7 +49,8 @@ public class Encryptor {
             encStr = c.doFinal(input);
             return encStr;
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             System.out.println(e.getMessage() + "\n" + input.length);
         }
 

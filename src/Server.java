@@ -24,10 +24,13 @@ public class Server extends Thread
         try
         {
             conn = new DBConnenction();
+            conn.createTable();
+            conn.createFriendsTable();
             server = new ServerSocket(9001);
             connections = new ArrayList<>();
             msgs = new ArrayList<>();
             rooms = new ArrayList<>();
+
             for(int i = 0; i < 5; i++)
             {
                 this.rooms.add(new ChatRoom(this));
@@ -35,7 +38,7 @@ public class Server extends Thread
         }
         catch (Exception e)
         {
-            System.out.println("Failed to start server!");
+            System.out.println(e + "\nFailed to start server!");
         }
 
         while (true)
@@ -66,5 +69,40 @@ public class Server extends Thread
         {
             System.out.println(e.getMessage() + "\nServer Line 49");
         }
+    }
+
+    public boolean verifyLogin(String username, String password)
+    {
+        return this.conn.getLogin(username, password);
+    }
+
+    public boolean makeFriends(String name1, String name2)
+    {
+        return this.conn.makeFriends(name1, name2);
+    }
+
+    public boolean removeFriends(String name1, String name2)
+    {
+        return this.conn.removeFriends(name1, name2);
+    }
+
+    public String[] getFriendsList(String name)
+    {
+        ArrayList<String> list = this.conn.getFriends(name);
+        String[] newList = new String[list.size()];
+
+        int index = 0;
+        for(String s: list)
+        {
+            newList[index] = s;
+            index++;
+        }
+
+        return newList;
+    }
+
+    public boolean createAccount(String username, String password)
+    {
+        return this.conn.insertDB(username, password);
     }
 }

@@ -6,9 +6,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class FriendsBox extends JFrame {
+public class FriendsBox extends JFrame
+{
     ArrayList<String> friendsList = new ArrayList<>();
-    String[] users = {"lee", "will", "user", "wholley", "sydney", "jawad"};
     JPanel friends = new JPanel();
     JPanel fMgmt = new JPanel(new GridBagLayout());
     JButton fAdd = new JButton("+");
@@ -20,13 +20,22 @@ public class FriendsBox extends JFrame {
     GridBagConstraints c = new GridBagConstraints();
     private UI parent;
 
-    public FriendsBox(UI p) {
-        this.parent = p;
-        this.friendsList = this.parent.fList;
+    public FriendsBox(UI p)
+    {
+        try
+        {
+            this.parent = p;
+            this.friendsList = this.parent.getFriendsList();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e + "\nFB::constructor");
+        }
         init();
     }
 
-    void init() {
+    void init()
+    {
         fAdd.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -81,29 +90,56 @@ public class FriendsBox extends JFrame {
         this.setVisible(true);
         this.pack();
 
-        getFriends();
-        displayFriends();
-    }
-
-    void getFriends() {
-        friendsList = this.parent.dbc.getFriends(this.parent.username);
-    }
-
-    void displayFriends() {
-        fList.setText("");
-        for(String s : friendsList) {
-            fList.append(s + "\n");
+        try
+        {
+            getFriends();
+            displayFriends();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e + "\nFB::init#friends list aquisition");
         }
     }
 
-    void addFriend(String name) {
-        this.parent.dbc.makeFriends(this.parent.username, name);
+    void getFriends()
+    {
+        try
+        {
+            this.friendsList = this.parent.getFriendsList();
+        }
+        catch(Exception e)
+        {
+            System.out.println("Failed to get friends in FriendsBox");
+        }
+    }
+
+    void displayFriends()
+    {
+        try
+        {
+            this.fList.setText("");
+            for(String s : this.friendsList)
+            {
+                this.fList.append(s + "\n");
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e + "\nFB::displayFriends");
+            System.out.println((this.fList == null) + "\n" + (this.friendsList == null));
+        }
+    }
+
+    void addFriend(String name)
+    {
+        this.parent.addFriend(name);
         getFriends();
         displayFriends();
     }
 
-    void removeFriend(String name) {
-        this.parent.dbc.removeFriends(this.parent.username, name);
+    void removeFriend(String name)
+    {
+        this.parent.removeFriend(name);
         getFriends();
         displayFriends();
     }

@@ -11,7 +11,8 @@ From this view, the user will be able to enter a message to send to the connecte
 This view will display all messages sent and received to the chat room
 When this view is closed, the view will be changed back to the SplashUI view
  */
-public class ChatUI extends JPanel {
+public class ChatUI extends JPanel
+{
     int MAIN_MARGIN = 10;
     String title = "dev:UI";
     Dimension frameDimension = new Dimension(800,300);
@@ -24,7 +25,8 @@ public class ChatUI extends JPanel {
     /**
      * This initializes the GUI.
      */
-    public void init() {
+    public void init()
+    {
         
         setBackground(new java.awt.Color(51, 153, 255));
         setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -50,7 +52,8 @@ public class ChatUI extends JPanel {
         this.add(input);
     }
 
-    public void displayMessage(String s) {
+    public void displayMessage(String s)
+    {
         contentDisplay.append("\n" + s);
     }
 
@@ -59,37 +62,61 @@ public class ChatUI extends JPanel {
      * The actionPerformed method can be edited to change the functionality of the button.
      * @param b - JButton
      */
-    public void addButtonListener(JButton b) {
-        b.addActionListener(new ActionListener() {
+    public void addButtonListener(JButton b)
+    {
+        b.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 //RSA encryption = new RSA (msg.getText());
                 //encryption.run(msg.getText());
-                Encryptor enc = new Encryptor("mathematical2001");
-                byte[] str = (parent.username + ": " + msg.getText()).getBytes();
-                str = enc.encrypt(str);
-                parent.client.sendMsg(str);
-                msg.setText("");
-            }
-        });
-    }
-
-    public void run() {
-        Thread read = new Thread(new Runnable() {
-            public void run() {
-                while(true) {
-                    System.out.print("");
-                    while(parent.client.queue.size() > 0) {
-                        displayMessage(parent.client.queue.get(0));
-                        parent.client.queue.remove(0);
-                    }
+                try {
+                    Encryptor enc = new Encryptor("mathematical2001");
+                    byte[] str = (parent.username + ": " + msg.getText()).getBytes();
+                    str = enc.encrypt(str);
+                    parent.client.sendMsg(str);
+                    msg.setText("");
+                }
+                catch (Exception ev)
+                {
+                    System.out.println(ev + "\nChatUI::addButtonListener");
                 }
             }
         });
-        read.start();
     }
 
-    public ChatUI(UI main) {
+    public void run()
+    {
+        try
+        {
+            Thread read = new Thread(new Runnable()
+            {
+                public void run()
+                {
+                    while(true)
+                    {
+                        System.out.print("");
+
+                        while(parent.client.queue.size() > 0)
+                        {
+                            displayMessage(parent.client.queue.get(0));
+                            parent.client.queue.remove(0);
+                        }
+                    }
+                }
+            });
+
+            read.start();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e + "\nChatUI::run");
+        }
+    }
+
+    public ChatUI(UI main)
+    {
         this.parent = main;
         this.init();
         this.run();

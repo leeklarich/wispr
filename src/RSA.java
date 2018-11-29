@@ -8,7 +8,7 @@ import java.io.IOException;
 
 
 public class RSA 
-    {
+{
         private BigInteger p;
         private BigInteger q;
         private BigInteger N;
@@ -19,6 +19,7 @@ public class RSA
         private Random     r;
         public String test;
         private String fileName;
+
         BufferedWriter bw = null;
         FileWriter fw = null;
  
@@ -47,7 +48,8 @@ public class RSA
         System.out.println("String in Bytes: "
                 + bytesToString(test.getBytes()));
         
-        try {
+        try
+        {
             fw = new FileWriter(fileName);
             bw = new BufferedWriter(fw);
             // encrypt
@@ -62,10 +64,13 @@ public class RSA
             bw.newLine();
             bw.close();
             fw.close();
-             } catch (IOException e){
+             }
+             catch (IOException e)
+             {
                  e.printStackTrace();
              }
     }
+
     private static String bytesToString(byte[] encrypted)
     {
         String test = "";
@@ -73,6 +78,7 @@ public class RSA
         {
             test += Byte.toString(b);
         }
+
         return test;
     }
  

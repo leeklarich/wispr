@@ -8,7 +8,8 @@ import java.awt.event.WindowEvent;
 import org.jdesktop.beansbinding.*;
 import org.jdesktop.layout.*;
 
-class MainUI extends JPanel {
+class MainUI extends JPanel
+{
     JLabel UsernameLabel = new JLabel();
     TextField userField = new java.awt.TextField();
     JLabel PasswordLabel = new javax.swing.JLabel();
@@ -16,10 +17,11 @@ class MainUI extends JPanel {
     JLabel TitleLabel = new javax.swing.JLabel();
     JButton LoginButton = new javax.swing.JButton();
     JButton CreateAccButton = new javax.swing.JButton();
+
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     private UI parent;
 
-void init() 
+    void init()
     {  
         
         setBackground(new java.awt.Color(51, 153, 255));
@@ -60,14 +62,19 @@ void init()
                     parent.setUsername(userField.getText());
                     parent.changeState(1);
                 }*/
-                if(parent.dbc.getLogin(userField.getText(), PassField.getText()))
+
+                /*if(parent.dbc.getLogin(userField.getText(), PassField.getText().hashValue()))
                 {
                     JOptionPane.showMessageDialog(null, "Logging In As " + userField.getText());
                     parent.setUsername(userField.getText());
                     parent.init(1);
                 }
-                else 
+                else
+                {
                     JOptionPane.showMessageDialog(null, "You Have Entered The Wrong Credentials!");
+                }*/
+
+                parent.sendLoginInformation(userField.getText(), PassField.getText().hashCode() + "");
             }
         });
 
@@ -76,15 +83,14 @@ void init()
         {
             public void actionPerformed(ActionEvent e)
             {
-                parent.dbc.insertDB(userField.getText(), PassField.getText());
-                JOptionPane.showMessageDialog(null, "You Have Created The Account " + userField.getText() + "!");
-                parent.setUsername(userField.getText());
-                parent.init(1);
+                parent.sendNewAccountInfo(userField.getText(), PassField.getText().hashCode() + "");
             }
         });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+
         this.setLayout(layout);
+
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
@@ -109,6 +115,7 @@ void init()
                             .add(userField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 157, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(100, Short.MAX_VALUE))
         );
+
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
@@ -128,10 +135,17 @@ void init()
                     .add(LoginButton))
                 .add(63, 63, 63))
         );
+
         bindingGroup.bind();
     }
 
-   public MainUI(UI main)
+    public void clearTextFields()
+    {
+        this.userField.setText("");
+        this.PassField.setText("");
+    }
+
+    public MainUI(UI main)
     {
         this.parent = main;
         this.init();

@@ -1,11 +1,13 @@
-public class Runner {
-    public static void main(String[] args) {
-        try {
-            Server s = new Server();
-            s.start();
+public class Runner
+{
+    public static void main(String[] args)
+    {
+        try
+        {
             UI a = new UI();
-            //UI b = new UI();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.out.println(e);
         }
     }
